@@ -1,0 +1,16 @@
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\iBeautyWebApi.deps.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\iBeautyWebApi.runtimeconfig.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\iBeautyWebApi.runtimeconfig.dev.json
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\iBeautyWebApi.dll
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.csprojAssemblyReference.cache
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.RazorAssemblyInfo.cache
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.RazorAssemblyInfo.cs
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.AssemblyInfoInputs.cache
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.AssemblyInfo.cs
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.RazorTargetAssemblyInfo.cache
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\bin\Debug\netcoreapp2.2\iBeautyWebApi.pdb
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.dll
+C:\Users\DeveloperCit02\source\repos\iBeautyWebApi\iBeautyWebApi\obj\Debug\netcoreapp2.2\iBeautyWebApi.pdb
