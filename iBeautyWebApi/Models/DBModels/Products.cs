@@ -15,5 +15,8 @@ namespace iBeautyWebApi
         public bool Status { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
+
+        public virtual Categories Category { get; set; }
+        public virtual Salons Salon { get; set; }
     }
 }

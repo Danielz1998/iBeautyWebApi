@@ -1,4 +1,5 @@
 ﻿using System;
+using iBeautyWebApi.Models.Stored_Procedures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,6 +7,7 @@ namespace iBeautyWebApi
 {
     public partial class iBeautyContext : DbContext
     {
+
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
@@ -13,6 +15,9 @@ namespace iBeautyWebApi
         public virtual DbSet<Salons> Salons { get; set; }
         public virtual DbSet<Services> Services { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+
+        //Stored Procedures
+        public DbSet<sp_NearbySalons> SP_NearbySalons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,6 +54,12 @@ namespace iBeautyWebApi
                 entity.Property(e => e.SalonId).HasColumnName("salon_id");
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Salon)
+                    .WithMany(p => p.Categories)
+                    .HasForeignKey(d => d.SalonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Categories_Salons");
             });
 
             modelBuilder.Entity<Cities>(entity =>
@@ -80,6 +91,12 @@ namespace iBeautyWebApi
                     .IsUnicode(false);
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.Cities)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Cities_Countries");
             });
 
             modelBuilder.Entity<Countries>(entity =>
@@ -134,7 +151,6 @@ namespace iBeautyWebApi
                     .IsUnicode(false);
 
                 entity.Property(e => e.Image)
-                    .IsRequired()
                     .HasColumnName("image")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -152,6 +168,18 @@ namespace iBeautyWebApi
                 entity.Property(e => e.SalonId).HasColumnName("salon_id");
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Categories");
+
+                entity.HasOne(d => d.Salon)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.SalonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Salons");
             });
 
             modelBuilder.Entity<Salons>(entity =>
@@ -216,6 +244,12 @@ namespace iBeautyWebApi
                     .HasColumnName("telephone")
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Salons)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Salons_Cities");
             });
 
             modelBuilder.Entity<Services>(entity =>
@@ -258,6 +292,18 @@ namespace iBeautyWebApi
                 entity.Property(e => e.SalonId).HasColumnName("salon_id");
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Services)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Services_Categories");
+
+                entity.HasOne(d => d.Salon)
+                    .WithMany(p => p.Services)
+                    .HasForeignKey(d => d.SalonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Services_Salons");
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -315,6 +361,12 @@ namespace iBeautyWebApi
                     .IsUnicode(false);
 
                 entity.Property(e => e.VerificationCode).HasColumnName("verification_code");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Cities");
             });
         }
     }
