@@ -133,9 +133,8 @@ namespace iBeautyWebApi.Controllers
             var emailexist = _context.Users.FirstOrDefault(x => x.Email == item.Email);
             var telephoneexist = _context.Users.FirstOrDefault(x => x.Telephone == item.Telephone);
 
-            var validaremail = emailexist == null;
-            var validartelephone = telephoneexist == null;
-            if (validaremail && validartelephone)
+            var validar = emailexist == null || telephoneexist == null;
+            if (validar)
             {
                 _context.Users.Add(item);
                 await _context.SaveChangesAsync();

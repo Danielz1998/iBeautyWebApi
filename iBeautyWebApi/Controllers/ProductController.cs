@@ -23,7 +23,7 @@ namespace iBeautyWebApi.Controllers
         {
             var product = _context.Products
                 .Include(cat => cat.Category)
-                .FirstOrDefault(x => x.ProductId == id);
+                .FirstOrDefault(pro => pro.ProductId == id && pro.Status == true);
 
             var validar = product == null;
             if (validar)
@@ -45,14 +45,14 @@ namespace iBeautyWebApi.Controllers
         [HttpGet("ProductsbyCategory/{id}")]
         public async Task<ActionResult> GetProducts(int id)
         {
-            var categories = await _context.Categories.Where(cat => cat.SalonId == id)
+            var categories = await _context.Categories.Where(cat => cat.SalonId == id && cat.Status == true)
                 .Include(sal => sal.Salon)
                 .Select(Category => new
                 {
                     SalonId = Category.SalonId,
                     Salon = Category.Salon.Name,
                     CategoryName = Category.Name,
-                    Products = _context.Products.Where(prod => prod.CategoryId == Category.CategoryId)
+                    Products = _context.Products.Where(prod => prod.CategoryId == Category.CategoryId && prod.Status == true)
                 .Include(cat => cat.Category)
                 .Select(Product => new
                 {
@@ -65,6 +65,65 @@ namespace iBeautyWebApi.Controllers
                 })
                 }).ToListAsync();
             return Ok(categories);
+        }
+
+        [HttpPost("PostProduct")]
+        public async Task<ActionResult<Products>> PostProduct(Products prod)
+        {
+            Products item = new Products()
+            {
+                Name = prod.Name,
+                Description = prod.Description,
+                Image = prod.Image,
+                CategoryId = prod.CategoryId,
+                SalonId = prod.SalonId,
+                Price = prod.Price,
+                Status = prod.Status,
+                DateAdded = DateTime.Now,
+                DateModified = DateTime.Now
+            };
+
+            _context.Products.Add(item);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Name = item.Name,
+                Description = item.Description,
+                Image = item.Image,
+                CategoryId = item.CategoryId,
+                SalonId = item.SalonId,
+                Price = item.Price,
+                Status = item.Status,
+                DateAdded = item.DateAdded,
+                DateModified = item.DateModified
+            });
+        }
+
+        [HttpPut("PutProduct/{id}")]
+        public async Task<IActionResult> PutProduct(int id, Products prod)
+        {
+            var product = _context.Products.FirstOrDefault(x => x.ProductId == id);
+
+            var validar = false;
+            if (validar)
+            {
+                return NotFound();
+            }
+
+            product.Name = prod.Name;
+            product.Description = prod.Description;
+            product.Image = prod.Image;
+            product.Price = prod.Price;
+            product.Status = prod.Status;
+            product.DateModified = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+            });
         }
     }
 }

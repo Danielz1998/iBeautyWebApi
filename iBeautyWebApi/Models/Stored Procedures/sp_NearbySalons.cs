@@ -18,5 +18,6 @@ namespace iBeautyWebApi.Models.Stored_Procedures
         public string CityName { get; set; }
         public string Address { get; set; }
         public double Distance { get; set; }
+        public bool Status { get; set; }
     }
 }

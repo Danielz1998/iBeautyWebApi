@@ -9,6 +9,7 @@ namespace iBeautyWebApi
         {
             Categories = new HashSet<Categories>();
             Products = new HashSet<Products>();
+            Promotions = new HashSet<Promotions>();
             Services = new HashSet<Services>();
         }
 
@@ -29,6 +30,7 @@ namespace iBeautyWebApi
         public virtual Cities City { get; set; }
         public virtual ICollection<Categories> Categories { get; set; }
         public virtual ICollection<Products> Products { get; set; }
+        public virtual ICollection<Promotions> Promotions { get; set; }
         public virtual ICollection<Services> Services { get; set; }
     }
 }

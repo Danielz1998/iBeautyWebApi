@@ -24,9 +24,9 @@ namespace iBeautyWebApi.Controllers
         {
             var lat = latitude;
             var lon = longitude;
-            var stores = await _context.SP_NearbySalons.FromSql($"sp_NearbySalons {lat}, {lon}").OrderBy(x => x.Distance).ToListAsync();
+            var salons = await _context.SP_NearbySalons.FromSql($"sp_NearbySalons {lat}, {lon}").Where(sal => sal.Status == true).OrderBy(x => x.Distance).ToListAsync();
 
-            return Ok(stores);
+            return Ok(salons);
         }
     }
 }

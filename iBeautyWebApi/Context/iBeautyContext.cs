@@ -7,11 +7,11 @@ namespace iBeautyWebApi
 {
     public partial class iBeautyContext : DbContext
     {
-
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<Promotions> Promotions { get; set; }
         public virtual DbSet<Salons> Salons { get; set; }
         public virtual DbSet<Services> Services { get; set; }
         public virtual DbSet<Users> Users { get; set; }
@@ -180,6 +180,38 @@ namespace iBeautyWebApi
                     .HasForeignKey(d => d.SalonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Products_Salons");
+            });
+
+            modelBuilder.Entity<Promotions>(entity =>
+            {
+                entity.HasKey(e => e.PromotionId);
+
+                entity.Property(e => e.PromotionId).HasColumnName("promotion_id");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Image)
+                    .HasColumnName("image")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SalonId).HasColumnName("salon_id");
+
+                entity.HasOne(d => d.Salon)
+                    .WithMany(p => p.Promotions)
+                    .HasForeignKey(d => d.SalonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Promotions_Salons");
             });
 
             modelBuilder.Entity<Salons>(entity =>

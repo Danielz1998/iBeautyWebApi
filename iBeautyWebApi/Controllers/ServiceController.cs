@@ -23,7 +23,7 @@ namespace iBeautyWebApi.Controllers
         {
             var service = _context.Services
                 .Include(cat => cat.Category)
-                .FirstOrDefault(x => x.ServiceId == id);
+                .FirstOrDefault(serv => serv.ServiceId == id && serv.Status == true);
 
             var validar = service == null;
             if (validar)
@@ -45,14 +45,14 @@ namespace iBeautyWebApi.Controllers
         [HttpGet("ServicesbyCategory/{id}")]
         public async Task<ActionResult> GetProducts(int id)
         {
-            var categories = await _context.Categories.Where(cat => cat.SalonId == id)
+            var categories = await _context.Categories.Where(cat => cat.SalonId == id && cat.Status == true)
                 .Include(sal => sal.Salon)
                 .Select(Category => new
                 {
                     SalonId = Category.SalonId,
                     Salon = Category.Salon.Name,
                     CategoryName = Category.Name,
-                    Services = _context.Services.Where(serv => serv.CategoryId == Category.CategoryId)
+                    Services = _context.Services.Where(serv => serv.CategoryId == Category.CategoryId && serv.Status == true)
                 .Include(cat => cat.Category)
                 .Select(Service => new
                 {
