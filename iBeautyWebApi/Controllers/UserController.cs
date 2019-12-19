@@ -67,17 +67,17 @@ namespace iBeautyWebApi.Controllers
 
             return Ok(new
             {
-                UserId = item.UserId,
-                Firstname = item.Firstname,
-                Lastname = item.Lastname,
-                Email = item.Email,
-                Telephone = item.Telephone,
-                Picture = item.Picture,
-                Password = item.Password,
-                VerificationCode = item.VerificationCode,
-                Status = item.Status,
-                DateAdded = item.DateAdded,
-                DateModified = item.DateModified
+                UserId = customer.UserId,
+                Firstname = customer.Firstname,
+                Lastname = customer.Lastname,
+                Email = customer.Email,
+                Telephone = customer.Telephone,
+                Picture = customer.Picture,
+                Password = customer.Password,
+                VerificationCode = customer.VerificationCode,
+                Status = customer.Status,
+                DateAdded = customer.DateAdded,
+                DateModified = customer.DateModified
             });
         }
 
@@ -89,11 +89,13 @@ namespace iBeautyWebApi.Controllers
 
             Users item = new Users()
             {
+                CityId = 1,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
                 Email = user.Email,
                 Telephone = user.Telephone,
-                Password = user.Password,
+                Picture = ".png",
+                Password = Encrypter.Encrypt(user.Password),
                 VerificationCode = code,
                 Status = false,
                 DateAdded = DateTime.Now,

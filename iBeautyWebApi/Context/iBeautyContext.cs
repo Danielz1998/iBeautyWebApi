@@ -23,7 +23,7 @@ namespace iBeautyWebApi
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("server=.;database=iBeauty;user=;password=;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("server=iBeauty.mssql.somee.com;database=iBeauty;user=ibeauty;password=Gretsch1998305;");
             }
         }
 
@@ -234,6 +234,10 @@ namespace iBeautyWebApi
                 entity.Property(e => e.DateModified)
                     .HasColumnName("date_modified")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Description)
+                    .HasColumnName("description")
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Email)
                     .IsRequired()

@@ -28,5 +28,45 @@ namespace iBeautyWebApi.Controllers
 
             return Ok(salons);
         }
+
+        [HttpGet("Salons")]
+        public async Task<ActionResult<sp_NearbySalons>> GetSalons()
+        {
+            var salons = await _context.Salons.Where(sal => sal.Status == true).Select(Salon => new
+            {
+                SalonId = Salon.SalonId,
+                Name = Salon.Name,
+                Image = Salon.Image,
+                Logo = Salon.Logo,
+                Telephone = Salon.Telephone,
+                Email = Salon.Email,
+                Address = Salon.Address,
+                Status = Salon.Status,
+                Description = Salon.Description
+            }).ToListAsync();
+
+            return Ok(salons);
+        }
+
+        [HttpGet("Salons/{id}")]
+        public async Task<ActionResult<sp_NearbySalons>> GetSalonsById(int id)
+        {
+            var salons = await _context.Salons.Where(sal => sal.SalonId == id && sal.Status == true).Select(Salon => new
+            {
+                SalonId = Salon.SalonId,
+                Name = Salon.Name,
+                Image = Salon.Image,
+                Logo = Salon.Logo,
+                Telephone = Salon.Telephone,
+                Email = Salon.Email,
+                Address = Salon.Address,
+                Status = Salon.Status,
+                Description = Salon.Description
+            }).ToListAsync();
+
+            return Ok(salons);
+        }
+
+
     }
 }

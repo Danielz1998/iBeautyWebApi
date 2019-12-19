@@ -35,10 +35,10 @@ namespace iBeautyWebApi.Controllers
             {
                 ProductId = product.ProductId,
                 Name = product.Name,
-                Descripcion = product.Description,
-                Category = product.Category.Name,
-                Precio = product.Price,
-                Imagen = product.Image
+                Description = product.Description,
+                CategoryName = product.Category.Name,
+                Price = product.Price,
+                Image = product.Image
             });
         }
 
@@ -50,7 +50,7 @@ namespace iBeautyWebApi.Controllers
                 .Select(Category => new
                 {
                     SalonId = Category.SalonId,
-                    Salon = Category.Salon.Name,
+                    SalonName = Category.Salon.Name,
                     CategoryName = Category.Name,
                     Products = _context.Products.Where(prod => prod.CategoryId == Category.CategoryId && prod.Status == true)
                 .Include(cat => cat.Category)
@@ -64,6 +64,13 @@ namespace iBeautyWebApi.Controllers
                     Image = Product.Image
                 })
                 }).ToListAsync();
+
+            var validar = categories == null;
+            if (validar)
+            {
+                return NotFound();
+            }
+
             return Ok(categories);
         }
 
@@ -123,6 +130,12 @@ namespace iBeautyWebApi.Controllers
 
             return Ok(new
             {
+                Name = product.Name,
+                Description = product.Description,
+                Image = product.Image,
+                Price = product.Price,
+                Status = product.Status,
+                DateModified = product.DateModified
             });
         }
     }

@@ -10,8 +10,10 @@ namespace iBeautyWebApi.Classes
     {
         public bool SendRegistrationCode(string email, string name, int code)
         {
-            var user = "ibeautyapphn@gmail.com";
-            var pass = "ibeauty123";
+            //var user = "ibeautyapphn@gmail.com";
+            //var pass = "ibeauty123";
+            var user = "registrodev@gmail.com";
+            var pass = "comidas45*";
             MailMessage mail = new MailMessage();
             mail.To.Add(new MailAddress(email));
             mail.From = new MailAddress(user);

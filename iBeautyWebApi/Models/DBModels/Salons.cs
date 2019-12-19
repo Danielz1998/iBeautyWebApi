@@ -26,6 +26,7 @@ namespace iBeautyWebApi
         public bool Status { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
+        public string Description { get; set; }
 
         public virtual Cities City { get; set; }
         public virtual ICollection<Categories> Categories { get; set; }
