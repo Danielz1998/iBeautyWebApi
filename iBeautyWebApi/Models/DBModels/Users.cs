@@ -5,6 +5,11 @@ namespace iBeautyWebApi
 {
     public partial class Users
     {
+        public Users()
+        {
+            Reservations = new HashSet<Reservations>();
+        }
+
         public int UserId { get; set; }
         public int CityId { get; set; }
         public string Firstname { get; set; }
@@ -19,5 +24,6 @@ namespace iBeautyWebApi
         public DateTime DateModified { get; set; }
 
         public virtual Cities City { get; set; }
+        public virtual ICollection<Reservations> Reservations { get; set; }
     }
 }

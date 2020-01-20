@@ -5,6 +5,11 @@ namespace iBeautyWebApi
 {
     public partial class Services
     {
+        public Services()
+        {
+            Reservations = new HashSet<Reservations>();
+        }
+
         public int ServiceId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,5 +23,6 @@ namespace iBeautyWebApi
 
         public virtual Categories Category { get; set; }
         public virtual Salons Salon { get; set; }
+        public virtual ICollection<Reservations> Reservations { get; set; }
     }
 }

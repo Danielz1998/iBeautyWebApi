@@ -84,8 +84,9 @@ namespace iBeautyWebApi.Controllers
         [HttpPost("UserRegistration")]
         public async Task<ActionResult<Users>> PostCustomer(Users user)
         {
-            Random rdm = new Random();
-            var code = rdm.Next(1000, 9000);
+            //Random rdm = new Random();
+            //var code = rdm.Next(1000, 9000);
+            var code = 1111;
 
             Users item = new Users()
             {

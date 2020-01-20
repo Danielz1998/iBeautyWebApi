@@ -7,11 +7,13 @@ namespace iBeautyWebApi
 {
     public partial class iBeautyContext : DbContext
     {
+
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Promotions> Promotions { get; set; }
+        public virtual DbSet<Reservations> Reservations { get; set; }
         public virtual DbSet<Salons> Salons { get; set; }
         public virtual DbSet<Services> Services { get; set; }
         public virtual DbSet<Users> Users { get; set; }
@@ -23,6 +25,7 @@ namespace iBeautyWebApi
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("server=iBeauty.mssql.somee.com;database=iBeauty;user=ibeauty;password=Gretsch1998305;");
             }
         }
@@ -212,6 +215,39 @@ namespace iBeautyWebApi
                     .HasForeignKey(d => d.SalonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Promotions_Salons");
+            });
+
+            modelBuilder.Entity<Reservations>(entity =>
+            {
+                entity.HasKey(e => e.ReservationId);
+
+                entity.Property(e => e.ReservationId).HasColumnName("reservation_id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DateAdded)
+                    .HasColumnName("date_added")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.Reservations)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservations_Services");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Reservations)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservations_Users");
             });
 
             modelBuilder.Entity<Salons>(entity =>

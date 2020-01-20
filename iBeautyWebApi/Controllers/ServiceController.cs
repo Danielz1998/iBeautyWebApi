@@ -33,12 +33,12 @@ namespace iBeautyWebApi.Controllers
 
             return Ok(new
             {
-                ProductId = service.ServiceId,
+                ServiceId = service.ServiceId,
                 Name = service.Name,
-                Descripcion = service.Description,
+                Description = service.Description,
                 Category = service.Category.Name,
-                Precio = service.Price,
-                Imagen = service.Image
+                Price = service.Price,
+                Image = service.Image
             });
         }
 
@@ -56,8 +56,8 @@ namespace iBeautyWebApi.Controllers
                 .Include(cat => cat.Category)
                 .Select(Service => new
                 {
-                    ProductId = Service.ServiceId,
-                    Product = Service.Name,
+                    ServiceId = Service.ServiceId,
+                    Name = Service.Name,
                     Description = Service.Description,
                     CategoryName = Service.Category.Name,
                     Price = Service.Price,
