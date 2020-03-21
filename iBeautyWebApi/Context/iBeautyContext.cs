@@ -7,6 +7,14 @@ namespace iBeautyWebApi
 {
     public partial class iBeautyContext : DbContext
     {
+        public iBeautyContext()
+        {
+        }
+
+        public iBeautyContext(DbContextOptions<iBeautyContext> options)
+            : base(options)
+        {
+        }
 
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
@@ -14,6 +22,7 @@ namespace iBeautyWebApi
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Promotions> Promotions { get; set; }
         public virtual DbSet<Reservations> Reservations { get; set; }
+        public virtual DbSet<ReservationsStatus> ReservationsStatus { get; set; }
         public virtual DbSet<Salons> Salons { get; set; }
         public virtual DbSet<Services> Services { get; set; }
         public virtual DbSet<Users> Users { get; set; }
@@ -26,7 +35,7 @@ namespace iBeautyWebApi
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("server=iBeauty.mssql.somee.com;database=iBeauty;user=ibeauty;password=Gretsch1998305;");
+                optionsBuilder.UseSqlServer("server=.;database=iBeauty;user=;password=;Trusted_Connection=True;");
             }
         }
 
@@ -231,11 +240,17 @@ namespace iBeautyWebApi
                     .HasColumnName("date_added")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.ReservationStatusId).HasColumnName("reservation_status_id");
+
                 entity.Property(e => e.ServiceId).HasColumnName("service_id");
 
-                entity.Property(e => e.Status).HasColumnName("status");
-
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.ReservationStatus)
+                    .WithMany(p => p.Reservations)
+                    .HasForeignKey(d => d.ReservationStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservations_Reservations_Status");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Reservations)
@@ -248,6 +263,23 @@ namespace iBeautyWebApi
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservations_Users");
+            });
+
+            modelBuilder.Entity<ReservationsStatus>(entity =>
+            {
+                entity.HasKey(e => e.RservationsStatusId);
+
+                entity.ToTable("Reservations_Status");
+
+                entity.Property(e => e.RservationsStatusId).HasColumnName("rservations_status_id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SortOrder).HasColumnName("sort_order");
             });
 
             modelBuilder.Entity<Salons>(entity =>
@@ -347,9 +379,8 @@ namespace iBeautyWebApi
                     .IsUnicode(false);
 
                 entity.Property(e => e.Image)
-                    .IsRequired()
                     .HasColumnName("image")
-                    .HasMaxLength(10);
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Name)
                     .IsRequired()

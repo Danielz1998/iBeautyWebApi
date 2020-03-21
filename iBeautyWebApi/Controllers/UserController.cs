@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iBeautyWebApi.Classes;
+using iBeautyWebApi.Models.DTO_s;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,20 +47,22 @@ namespace iBeautyWebApi.Controllers
             return Ok(user);
         }
 
+        //[HttpGet("Prueba")]
+        //public async Task<ActionResult<Users>> PruebaCorreo()
+        //{
+        //    Email obj = new Email();
+        //    obj.SendRegistrationCode("marlondanielz1998@gmail.com", "Marlon", 1234);
+        //    return Ok();
+        //}
+
         [HttpPost("UserLogin")]
-        public async Task<ActionResult<Users>> PostCustomerLogin(Users user)
+        public async Task<ActionResult<Users>> PostCustomerLogin(LoginDTO log)
         {
-            Users item = new Users()
-            {
-                Email = user.Email,
-                Password = user.Password
-            };
+            var passencrypted = Encrypter.Encrypt(log.Password);
 
-            var passencrypted = Encrypter.Encrypt(user.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == log.User && x.Password == passencrypted || x.Telephone == log.User && x.Password == passencrypted);
 
-            var customer = await _context.Users.FirstOrDefaultAsync(q => q.Email == user.Email && q.Password == passencrypted);
-
-            var validar = customer == null;
+            var validar = user == null;
             if (validar)
             {
                 return NotFound();
@@ -67,26 +70,25 @@ namespace iBeautyWebApi.Controllers
 
             return Ok(new
             {
-                UserId = customer.UserId,
-                Firstname = customer.Firstname,
-                Lastname = customer.Lastname,
-                Email = customer.Email,
-                Telephone = customer.Telephone,
-                Picture = customer.Picture,
-                Password = customer.Password,
-                VerificationCode = customer.VerificationCode,
-                Status = customer.Status,
-                DateAdded = customer.DateAdded,
-                DateModified = customer.DateModified
+                UserId = user.UserId,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email,
+                Telephone = user.Telephone,
+                Picture = user.Picture,
+                Password = user.Password,
+                VerificationCode = user.VerificationCode,
+                Status = user.Status,
+                DateAdded = user.DateAdded,
+                DateModified = user.DateModified
             });
         }
 
         [HttpPost("UserRegistration")]
         public async Task<ActionResult<Users>> PostCustomer(Users user)
         {
-            //Random rdm = new Random();
-            //var code = rdm.Next(1000, 9000);
-            var code = 1111;
+            Random rdm = new Random();
+            var code = rdm.Next(1000, 9000);
 
             Users item = new Users()
             {
@@ -112,7 +114,7 @@ namespace iBeautyWebApi.Controllers
             var validarLastName = item.Lastname == "";
             if (validarLastName)
             {
-                return BadRequest("El nombre no puede ir vacio.");
+                return BadRequest("El apellido no puede ir vacio.");
             }
 
             var validarEmail = item.Email == "";
@@ -143,7 +145,7 @@ namespace iBeautyWebApi.Controllers
                 await _context.SaveChangesAsync();
 
                 Email obj = new Email();
-                obj.SendRegistrationCode(item.Email, item.Firstname, code);
+                obj.SendRegistrationCode(item.Email, code);
 
                 return Ok(new
                 {
@@ -210,11 +212,11 @@ namespace iBeautyWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("EditUserPassword/{email}/{password}")]
-        public async Task<IActionResult> PutCustomer(string email, string password, Users user)
+        [HttpPut("EditUserPassword/{userid}/{password}")]
+        public async Task<IActionResult> PutCustomer(int userid, string password, Users user)
         {
             var passencrypted = Encrypter.Encrypt(password);
-            var data = await _context.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == passencrypted);
+            var data = await _context.Users.FirstOrDefaultAsync(x => x.UserId == userid && x.Password == passencrypted);
 
             var validar = data == null;
             if (validar)
@@ -256,6 +258,7 @@ namespace iBeautyWebApi.Controllers
             data.Firstname = user.Firstname;
             data.Lastname = user.Lastname;
             data.Telephone = user.Telephone;
+            data.Email = user.Email;
             data.DateModified = DateTime.Now;
 
             await _context.SaveChangesAsync();

@@ -9,9 +9,10 @@ namespace iBeautyWebApi
         public int UserId { get; set; }
         public int ServiceId { get; set; }
         public DateTime Date { get; set; }
-        public bool? Status { get; set; }
+        public int ReservationStatusId { get; set; }
         public DateTime? DateAdded { get; set; }
 
+        public virtual ReservationsStatus ReservationStatus { get; set; }
         public virtual Services Service { get; set; }
         public virtual Users User { get; set; }
     }
